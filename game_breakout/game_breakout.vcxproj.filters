@@ -57,6 +57,9 @@
     <ClCompile Include="GameLevel.cpp">
       <Filter>game</Filter>
     </ClCompile>
+    <ClCompile Include="BallObject.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="shader.h">
@@ -78,6 +81,9 @@
       <Filter>game</Filter>
     </ClInclude>
     <ClInclude Include="GameLevel.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="BallObject.h">
       <Filter>game</Filter>
     </ClInclude>
   </ItemGroup>
