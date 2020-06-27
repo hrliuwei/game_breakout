@@ -34,11 +34,11 @@ glm::vec2 BallObject::Move(GLfloat dt, unsigned int window_width)
 			Velocity.y = -Velocity.y;
 			Position.y = 10.0f;
 		}
-		else if (Position.y + Size.y >= window_width)
-		{
-			Velocity.y = -Velocity.y;
-			Position.y = window_width - Size.y;
-		}
+ 		else if (Position.y + Size.y >= 600)
+ 		{
+ 			Velocity.y = -Velocity.y;
+ 			Position.y = 600 - Size.y;
+ 		}
 	}
 	//Position = glm::vec2(200, 300);
 	return Position;
