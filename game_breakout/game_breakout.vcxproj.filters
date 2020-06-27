@@ -51,6 +51,12 @@
     <ClCompile Include="SpriteRenderer.cpp">
       <Filter>render</Filter>
     </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="GameLevel.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="shader.h">
@@ -67,6 +73,12 @@
     </ClInclude>
     <ClInclude Include="SpriteRenderer.h">
       <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLevel.h">
+      <Filter>game</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -11,7 +11,8 @@
 
 #include "ResourceMgr.h"
 #include <map>
-
+#include <vector>
+#include "GameLevel.h"
 
 // Represents the current state of the game
 enum GameState {
@@ -38,6 +39,10 @@ public:
  	void ProcessInput(GLfloat dt);
  	void Update(GLfloat dt);
  	void Render();
+private:
+	std::vector<GameLevel> m_Levels;
+	unsigned int m_Level;
+
 };
 
 #endif
