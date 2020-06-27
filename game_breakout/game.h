@@ -10,6 +10,7 @@
 #define GAME_H
 
 #include "ResourceMgr.h"
+#include <map>
 
 
 // Represents the current state of the game

@@ -49,7 +49,7 @@
       <Filter>game</Filter>
     </ClCompile>
     <ClCompile Include="SpriteRenderer.cpp">
-      <Filter>Header Files</Filter>
+      <Filter>render</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -66,7 +66,7 @@
       <Filter>game</Filter>
     </ClInclude>
     <ClInclude Include="SpriteRenderer.h">
-      <Filter>Header Files</Filter>
+      <Filter>render</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

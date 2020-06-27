@@ -16,7 +16,7 @@ class Shader
 public:
 	// 程序ID
 	unsigned int ID;
-
+	Shader() {};
 	// 构造器读取并构建着色器
 	Shader(const char* vertexPath, const char* fragmentPath, const char* geometryPath = nullptr);
 	// 使用/激活程序

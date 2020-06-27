@@ -28,7 +28,7 @@ class ResourceManager
 		 return s_resmgr;
 	 };
  	// Resource storage
- 	 std::map<std::string, Shader*>    m_Shaders;
+ 	 std::map<std::string, Shader>    m_Shaders;
  	 std::map<std::string, unsigned int> Textures;
  	// Loads (and generates) a shader program from file loading vertex, fragment (and geometry) shader's source code. If gShaderFile is not nullptr, it also loads a geometry shader
  	 Shader   LoadShader(const char  *vShaderFile, const char  *fShaderFile, const char *gShaderFile, std::string name);

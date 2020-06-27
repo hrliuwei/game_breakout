@@ -3,7 +3,9 @@
 #include <stdlib.h>
 #include "game.h"
 #include <GLFW/glfw3.h>
-#pragma comment( linker, "/subsystem:windows /entry:mainCRTStartup")
+#include <iostream>
+//#pragma comment( linker, "/subsystem:windows /entry:mainCRTStartup")
+//#pragma comment(linker, "/subsystem:\"windows\" /entry:\"mainCRTStartup\"")
 
 const GLuint SCREEN_WIDTH = 800;
 const GLuint SCREEN_HEIGHT = 600;
