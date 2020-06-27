@@ -29,6 +29,7 @@ SpriteRenderer  *g_Renderer;
 		 "D:\\Advantage\\game_breakout\\game_breakout\\fragment.fs", nullptr, "sprite");
 
 	 glm::mat4 projection = glm::ortho(0.0f, (GLfloat)Width, (GLfloat)Height, 0.0f, -1.0f, 1.0f);
+	 ResourceManager::GetInstance().GetShader("sprite").use();
 	 ResourceManager::GetInstance().GetShader("sprite").setInt("image", 0);
 	 ResourceManager::GetInstance().GetShader("sprite").setMat4("projection", projection);
 
