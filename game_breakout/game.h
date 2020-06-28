@@ -13,6 +13,7 @@
 #include <map>
 #include <vector>
 #include "GameLevel.h"
+#include "BallObject.h"
 
 // Represents the current state of the game
 enum GameState {
@@ -39,6 +40,9 @@ public:
  	void ProcessInput(GLfloat dt);
  	void Update(GLfloat dt);
  	void Render();
+	void DoCollisions();
+private:
+	bool CheckCollisons(GameObject& one, GameObject& two);
 private:
 	std::vector<GameLevel> m_Levels;
 	unsigned int m_Level;

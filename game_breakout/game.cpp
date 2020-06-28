@@ -10,7 +10,7 @@
 #include "ResourceMgr.h"
 #include "SpriteRenderer.h"
 #include <GLFW/glfw3.h>
-#include "BallObject.h"
+
 
 SpriteRenderer  *g_Renderer;
 
@@ -41,8 +41,9 @@ BallObject     *Ball;
  
  void Game::Init()
  {
-	 ResourceManager::GetInstance().LoadShader("D:\\Advantage\\game_breakout\\game_breakout\\vertex.vs",
-		 "D:\\Advantage\\game_breakout\\game_breakout\\fragment.fs", nullptr, "sprite");
+	 std::string commonPath = "F:\\PersonGit\\game_breakout\\Resource";
+	 ResourceManager::GetInstance().LoadShader("F:\\PersonGit\\game_breakout\\game_breakout\\vertex.vs",
+		 "F:\\PersonGit\\game_breakout\\game_breakout\\fragment.fs", nullptr, "sprite");
 
 	 glm::mat4 projection = glm::ortho(0.0f, (GLfloat)Width, (GLfloat)Height, 0.0f, -1.0f, 1.0f);
 	 ResourceManager::GetInstance().GetShader("sprite").use();
@@ -50,17 +51,17 @@ BallObject     *Ball;
 	 ResourceManager::GetInstance().GetShader("sprite").setMat4("projection", projection);
 
 	 g_Renderer = new SpriteRenderer(ResourceManager::GetInstance().GetShader("sprite"));
-	 ResourceManager::GetInstance().LoadTexture("D:\\Advantage\\game_breakout\\Resource\\awesomeface.png", "face");
-	 ResourceManager::GetInstance().LoadTexture("D:\\Advantage\\game_breakout\\Resource\\background.jpg", "background");
-	 ResourceManager::GetInstance().LoadTexture("D:\\Advantage\\game_breakout\\Resource\\block.png", "block");
-	 ResourceManager::GetInstance().LoadTexture("D:\\Advantage\\game_breakout\\Resource\\block_solid.png", "block_solid");
-	 ResourceManager::GetInstance().LoadTexture("D:\\Advantage\\game_breakout\\Resource\\paddle.png", "paddle");
+	 ResourceManager::GetInstance().LoadTexture((commonPath + "\\awesomeface.png").c_str(), "face");
+	 ResourceManager::GetInstance().LoadTexture((commonPath + "\\background.jpg").c_str(), "background");
+	 ResourceManager::GetInstance().LoadTexture((commonPath + "\\block.png").c_str(), "block");
+	 ResourceManager::GetInstance().LoadTexture((commonPath + "\\block_solid.png").c_str(), "block_solid");
+	 ResourceManager::GetInstance().LoadTexture((commonPath + "\\paddle.png").c_str(), "paddle");
 
 
-	 GameLevel one; one.Load("D:\\Advantage\\game_breakout\\Resource\\one.lvl", this->Width, this->Height*0.5);
-	 GameLevel two; two.Load("D:\\Advantage\\game_breakout\\Resource\\two.lvl", this->Width, this->Height*0.5);
-	 GameLevel three; three.Load("D:\\Advantage\\game_breakout\\Resource\\three.lvl", this->Width, this->Height*0.5);
-	 GameLevel four; four.Load("D:\\Advantage\\game_breakout\\Resource\\four.lvl", this->Width, this->Height*0.5);
+	 GameLevel one; one.Load((commonPath + "\\one.lvl").c_str(), this->Width, this->Height*0.5);
+	 GameLevel two; two.Load((commonPath + "\\two.lvl").c_str(), this->Width, this->Height*0.5);
+	 GameLevel three; three.Load((commonPath + "\\three.lvl").c_str(), this->Width, this->Height*0.5);
+	 GameLevel four; four.Load((commonPath + "\\four.lvl").c_str(), this->Width, this->Height*0.5);
 	 m_Levels.push_back(one);
 	 m_Levels.push_back(two);
 	 m_Levels.push_back(three);
@@ -80,6 +81,7 @@ BallObject     *Ball;
  void Game::Update(GLfloat dt)
  {
 	 Ball->Move(dt, Width);
+	 DoCollisions();
  }
  
  
@@ -122,4 +124,26 @@ BallObject     *Ball;
 	 Player->Draw(*g_Renderer);
 	 m_Levels[m_Level].Draw(*g_Renderer);
 	 Ball->Draw(*g_Renderer);
+ }
+
+ void Game::DoCollisions()
+ {
+	 for (GameObject& obj:m_Levels[m_Level].Bricks){
+		 if (!obj.Destroyed){
+			 if (CheckCollisons(*Ball, obj)){
+				 if (!obj.IsSolid){
+					 obj.Destroyed = GL_TRUE;
+				 }
+			 }
+		 }
+	 }
+ }
+
+ bool Game::CheckCollisons(GameObject& one, GameObject& two)
+ {
+	 bool CollisonsX = (one.Position.x + one.Size.x >= two.Position.x) && (two.Position.x + two.Size.x >= one.Position.x);
+
+	 bool CollisonsY = (one.Position.y + one.Size.y >= two.Position.y) && (two.Position.y + two.Size.y >= one.Position.y);
+
+	 return CollisonsX && CollisonsY;
  }
