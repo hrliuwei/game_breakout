@@ -43,6 +43,7 @@ public:
 	void DoCollisions();
 private:
 	bool CheckCollisons(GameObject& one, GameObject& two);
+	bool CheckCollisons(BallObject& one, GameObject& two);
 private:
 	std::vector<GameLevel> m_Levels;
 	unsigned int m_Level;

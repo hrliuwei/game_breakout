@@ -10,6 +10,7 @@
 #include "ResourceMgr.h"
 #include "SpriteRenderer.h"
 #include <GLFW/glfw3.h>
+#include <algorithm>
 
 
 SpriteRenderer  *g_Renderer;
@@ -139,6 +140,10 @@ BallObject     *Ball;
 	 }
  }
 
+ float clamp(float value, float min, float max) {
+	 return std::max(min, std::min(max, value));
+ }
+
  bool Game::CheckCollisons(GameObject& one, GameObject& two)
  {
 	 bool CollisonsX = (one.Position.x + one.Size.x >= two.Position.x) && (two.Position.x + two.Size.x >= one.Position.x);
@@ -146,4 +151,22 @@ BallObject     *Ball;
 	 bool CollisonsY = (one.Position.y + one.Size.y >= two.Position.y) && (two.Position.y + two.Size.y >= one.Position.y);
 
 	 return CollisonsX && CollisonsY;
+ }
+
+ bool Game::CheckCollisons(BallObject& one, GameObject& two)
+ {
+ 	 glm::vec2 center(one.Position + one.m_Radius);
+ 	 glm::vec2 aabb_half_extents(two.Size.x / 2, two.Size.y / 2);
+ 	 glm::vec2 aabb_center(two.Position + aabb_half_extents);
+ 
+ 	 glm::vec2 vD = center - aabb_center;
+	 glm::vec2 clamped;
+	 clamped.x = clamp(vD.x, -aabb_half_extents.x, aabb_half_extents.x);
+	 clamped.y = clamp(vD.y, -aabb_half_extents.y, aabb_half_extents.y);
+ 	 //glm::vec2 clamped =  glm::clamp(vD, -aabb_half_extents, aabb_half_extents);
+ 
+ 	 glm::vec2 closest = aabb_center + clamped;
+ 	 glm::vec2 dv = closest - center;
+ 	 return glm::length(dv) < one.m_Radius;
+	 
  }
