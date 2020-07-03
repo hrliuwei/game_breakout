@@ -165,6 +165,14 @@ BallObject     *Ball;
 			 }
 		 }
 	 }
+	 if (!Ball->m_bStuck){
+		 Collision collision = CheckCollisons(*Ball, *Player);
+		 if (std::get<0>(collision)) {
+			 Ball->Velocity.y = -Ball->Velocity.y;
+			 GLfloat peneration = Ball->m_Radius - glm::abs(std::get<2>(collision).y);
+			 Ball->Position.y -= peneration;
+		 }
+	 }
  }
 
  float clamp(float value, float min, float max) {
