@@ -22,6 +22,15 @@ enum GameState {
 	GAME_WIN
 };
 
+enum Direction {
+	UP = 0,
+	DOWN,
+	LEFT,
+	RIGHT
+};
+
+typedef std::tuple<GLboolean, Direction, glm::vec2> Collision;
+
 // Game holds all game-related state and functionality.
 // Combines all game-related data into a single class for
 // easy access to each of the components and manageability.
@@ -43,7 +52,7 @@ public:
 	void DoCollisions();
 private:
 	bool CheckCollisons(GameObject& one, GameObject& two);
-	bool CheckCollisons(BallObject& one, GameObject& two);
+	Collision CheckCollisons(BallObject& one, GameObject& two);
 private:
 	std::vector<GameLevel> m_Levels;
 	unsigned int m_Level;

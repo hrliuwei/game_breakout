@@ -23,7 +23,7 @@ const GLfloat PLAYER_VELOCITY(500.0f);
 GameObject      *Player;
 
 // 初始化球的速度
-const glm::vec2 INITIAL_BALL_VELOCITY(100.0f, -350.0f);
+const glm::vec2 INITIAL_BALL_VELOCITY(50.0f, -350.0f);
 // 球的半径
 const GLfloat BALL_RADIUS = 12.5f;
 
@@ -131,9 +131,36 @@ BallObject     *Ball;
  {
 	 for (GameObject& obj:m_Levels[m_Level].Bricks){
 		 if (!obj.Destroyed){
-			 if (CheckCollisons(*Ball, obj)){
+// 			 if (CheckCollisons(*Ball, obj)){
+// 				 if (!obj.IsSolid){
+// 					 obj.Destroyed = GL_TRUE;
+// 				 }
+// 			 }
+			 Collision collision = CheckCollisons(*Ball, obj);
+			 if (std::get<0>(collision)){
 				 if (!obj.IsSolid){
 					 obj.Destroyed = GL_TRUE;
+				 }
+				 Direction dir = std::get<1>(collision);
+				 if (dir == LEFT || dir == RIGHT){
+					 Ball->Velocity.x = -Ball->Velocity.x;
+					 GLfloat peneration = Ball->m_Radius - glm::abs(std::get<2>(collision).x);
+					 if (dir == LEFT){
+						 Ball->Position.x += peneration;
+					 }
+					 else {
+						 Ball->Position.x -= peneration;
+					 }					 
+				 }
+				 else {
+					 Ball->Velocity.y = -Ball->Velocity.y;
+					 GLfloat peneration = Ball->m_Radius - glm::abs(std::get<2>(collision).y);
+					 if (dir == UP){
+						 Ball->Position.y += peneration;						 
+					 }
+					 else {
+						 Ball->Position.y -= peneration;
+					 }
 				 }
 			 }
 		 }
@@ -153,7 +180,28 @@ BallObject     *Ball;
 	 return CollisonsX && CollisonsY;
  }
 
- bool Game::CheckCollisons(BallObject& one, GameObject& two)
+ Direction VevtorDirection(glm::vec2 target)
+ {
+	 glm::vec2 compass[] = {
+		 glm::vec2(0.0f,1.0f),
+		 glm::vec2(0.0f,-1.0f),
+		 glm::vec2(-1.0f,0.0f),
+		 glm::vec2(1.0f,0.0f)
+	 };
+	 GLfloat maxValue = 0.0;
+	 int best_dir = 0;
+	 for (int i = 0; i < 4; ++i) {
+		 GLfloat value = glm::abs(glm::dot(compass[i], glm::normalize(target)));
+		 if (value > maxValue){
+			 maxValue = value;
+			 best_dir = i;
+		 }
+	 }
+	 return Direction(best_dir);
+ }
+
+
+ Collision Game::CheckCollisons(BallObject& one, GameObject& two)
  {
  	 glm::vec2 center(one.Position + one.m_Radius);
  	 glm::vec2 aabb_half_extents(two.Size.x / 2, two.Size.y / 2);
@@ -167,6 +215,12 @@ BallObject     *Ball;
  
  	 glm::vec2 closest = aabb_center + clamped;
  	 glm::vec2 dv = closest - center;
- 	 return glm::length(dv) < one.m_Radius;
+ 	 //return glm::length(dv) < one.m_Radius;
+	 if (glm::length(dv) < one.m_Radius){
+		 return std::make_tuple(GL_TRUE, VevtorDirection(dv), dv);
+	 }
+	 else {
+		 return std::make_tuple(GL_FALSE, UP, glm::vec2(0, 0));
+	 }
 	 
  }
