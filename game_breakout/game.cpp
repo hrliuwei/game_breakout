@@ -23,7 +23,7 @@ const GLfloat PLAYER_VELOCITY(500.0f);
 GameObject      *Player;
 
 // 初始化球的速度
-const glm::vec2 INITIAL_BALL_VELOCITY(50.0f, -350.0f);
+const glm::vec2 INITIAL_BALL_VELOCITY(50.0f, -300.0f);
 // 球的半径
 const GLfloat BALL_RADIUS = 12.5f;
 
@@ -42,9 +42,9 @@ BallObject     *Ball;
  
  void Game::Init()
  {
-	 std::string commonPath = "F:\\PersonGit\\game_breakout\\Resource";
-	 ResourceManager::GetInstance().LoadShader("F:\\PersonGit\\game_breakout\\game_breakout\\vertex.vs",
-		 "F:\\PersonGit\\game_breakout\\game_breakout\\fragment.fs", nullptr, "sprite");
+	 std::string commonPath = "D:\\Advantage\\game_breakout\\Resource";
+	 ResourceManager::GetInstance().LoadShader("D:\\Advantage\\game_breakout\\game_breakout\\vertex.vs",
+		 "D:\\Advantage\\game_breakout\\game_breakout\\fragment.fs", nullptr, "sprite");
 
 	 glm::mat4 projection = glm::ortho(0.0f, (GLfloat)Width, (GLfloat)Height, 0.0f, -1.0f, 1.0f);
 	 ResourceManager::GetInstance().GetShader("sprite").use();
@@ -83,6 +83,12 @@ BallObject     *Ball;
  {
 	 Ball->Move(dt, Width);
 	 DoCollisions();
+	 if (Ball->Position.y >= Height)
+	 {
+		 ResetPlayer();
+		 RestBall();
+		 RestLevel();
+	 }
  }
  
  
@@ -127,6 +133,32 @@ BallObject     *Ball;
 	 Ball->Draw(*g_Renderer);
  }
 
+ void Game::ResetPlayer()
+ {
+	 glm::vec2 playerPos = glm::vec2(
+		 this->Width / 2 - PLAYER_SIZE.x / 2,
+		 this->Height - PLAYER_SIZE.y);
+	 Player->Position.x = playerPos.x;
+	 Player->Position.y = playerPos.y;
+ }
+
+ void Game::RestBall()
+ {
+	 Ball->m_bStuck = true;
+	 glm::vec2 ballPos = glm::vec2(
+	 Player->Position.x + Player->Size.x/2 - Ball->m_Radius,
+		 Player->Position.y - Ball->m_Radius*2);
+	 Ball->Position = ballPos;
+	 Ball->Velocity = INITIAL_BALL_VELOCITY;
+ }
+
+ void Game::RestLevel()
+ {
+	 for (GameObject& obj : m_Levels[m_Level].Bricks) {
+		 obj.Destroyed = GL_FALSE;
+	 }
+ }
+
  void Game::DoCollisions()
  {
 	 for (GameObject& obj:m_Levels[m_Level].Bricks){
@@ -168,9 +200,14 @@ BallObject     *Ball;
 	 if (!Ball->m_bStuck){
 		 Collision collision = CheckCollisons(*Ball, *Player);
 		 if (std::get<0>(collision)) {
-			 Ball->Velocity.y = -Ball->Velocity.y;
-			 GLfloat peneration = Ball->m_Radius - glm::abs(std::get<2>(collision).y);
-			 Ball->Position.y -= peneration;
+			 //Ball->Velocity.y = -Ball->Velocity.y;
+			 //GLfloat peneration = Ball->m_Radius - glm::abs(std::get<2>(collision).y);
+			 //Ball->Position.y -= peneration;
+			 GLfloat playerCenter = Player->Position.x + Player->Size.x / 2;
+			 GLfloat ballCenter = Ball->Position.x + Ball->m_Radius;
+			 GLfloat dlt = ballCenter - playerCenter;
+			 Ball->Velocity.x = -1 *Ball->Velocity.x;
+			 Ball->Velocity.y = -1 * glm::abs(Ball->Velocity.y);
 		 }
 	 }
  }

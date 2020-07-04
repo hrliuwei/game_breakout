@@ -50,6 +50,9 @@ public:
  	void Update(GLfloat dt);
  	void Render();
 	void DoCollisions();
+	void ResetPlayer();
+	void RestBall();
+	void RestLevel();
 private:
 	bool CheckCollisons(GameObject& one, GameObject& two);
 	Collision CheckCollisons(BallObject& one, GameObject& two);
