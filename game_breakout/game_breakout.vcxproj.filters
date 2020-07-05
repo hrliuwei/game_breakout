@@ -60,6 +60,9 @@
     <ClCompile Include="BallObject.cpp">
       <Filter>game</Filter>
     </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="shader.h">
@@ -84,6 +87,12 @@
       <Filter>game</Filter>
     </ClInclude>
     <ClInclude Include="BallObject.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="Common.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Particle.h">
       <Filter>game</Filter>
     </ClInclude>
   </ItemGroup>

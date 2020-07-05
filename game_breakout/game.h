@@ -14,6 +14,7 @@
 #include <vector>
 #include "GameLevel.h"
 #include "BallObject.h"
+#include "Common.h"
 
 // Represents the current state of the game
 enum GameState {
@@ -59,6 +60,8 @@ private:
 private:
 	std::vector<GameLevel> m_Levels;
 	unsigned int m_Level;
+
+
 
 };
 
