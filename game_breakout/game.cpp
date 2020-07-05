@@ -59,6 +59,10 @@ ParticleGenerator   *Particles;
 	 ResourceManager::GetInstance().GetShader("sprite").setInt("image", 0);
 	 ResourceManager::GetInstance().GetShader("sprite").setMat4("projection", projection);
 
+	 ResourceManager::GetInstance().GetShader("particle").use();
+	 ResourceManager::GetInstance().GetShader("particle").setInt("image", 0);
+	 ResourceManager::GetInstance().GetShader("particle").setMat4("projection", projection);
+
 	 g_Renderer = new SpriteRenderer(ResourceManager::GetInstance().GetShader("sprite"));
 	 ResourceManager::GetInstance().LoadTexture((commonPath + "\\awesomeface.png").c_str(), "face");
 	 ResourceManager::GetInstance().LoadTexture((commonPath + "\\background2.jpg").c_str(), "background");
@@ -87,7 +91,7 @@ ParticleGenerator   *Particles;
 	 glm::vec2 ballPos = playerPos + glm::vec2(PLAYER_SIZE.x / 2 - BALL_RADIUS, -BALL_RADIUS * 2);
 	 Ball = new BallObject(ballPos, BALL_RADIUS, INITIAL_BALL_VELOCITY, ResourceManager::GetInstance().GetTexture("face"));
 
-	 Particles = new ParticleGenerator(ResourceManager::GetInstance().GetShader("sprite"),
+	 Particles = new ParticleGenerator(ResourceManager::GetInstance().GetShader("particle"),
 		 ResourceManager::GetInstance().GetTexture("particle"), 500);
 
 	

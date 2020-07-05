@@ -61,8 +61,8 @@ void ParticleGenerator::Update(GLfloat dt, GameObject& object, GLuint newParticl
 		if (p.Life > 0.0f)
 		{
 			p.Position -= p.Velocity*dt;
-			//p.Color.a -= dt * 5.0f;
-			p.Color.a = 0.0f;
+			p.Color.a -= dt * 2.5f;
+			//p.Color.a = 0.0f;
 		}
 	}
 }
@@ -75,18 +75,20 @@ void ParticleGenerator::Draw() {
 	{
 		if (particle.Life > 0.0f)
 		{
-			glm::mat4 model(1.0f);
-			model = glm::translate(model, glm::vec3(particle.Position, 0.0f));
-
-			model = glm::translate(model, glm::vec3(0.5f*nsize, 0.5f*nsize, 0.0f));
-			model = glm::rotate(model, 0.0f, glm::vec3(0.0f, 0.0f, 1.0f));
-			model = glm::translate(model, glm::vec3(-0.5f*nsize, -0.5f*nsize, 0.0f));
-
-			model = glm::scale(model, glm::vec3(glm::vec2(nsize, nsize), 1.0f));
-
-			m_shader.setMat4("model", model);
-			m_shader.setVec3("spriteColor", glm::vec3(1.0,1.0f,0.0f));
+// 			glm::mat4 model(1.0f);
+// 			model = glm::translate(model, glm::vec3(particle.Position, 0.0f));
+// 
+// 			model = glm::translate(model, glm::vec3(0.5f*nsize, 0.5f*nsize, 0.0f));
+// 			model = glm::rotate(model, 0.0f, glm::vec3(0.0f, 0.0f, 1.0f));
+// 			model = glm::translate(model, glm::vec3(-0.5f*nsize, -0.5f*nsize, 0.0f));
+// 
+// 			model = glm::scale(model, glm::vec3(glm::vec2(nsize, nsize), 1.0f));
+// 
+// 			m_shader.setMat4("model", model);
+// 			m_shader.setVec3("spriteColor", glm::vec3(1.0,1.0f,0.0f));
 			
+			m_shader.setVec2("offset", particle.Position);
+			m_shader.setVec4("color", particle.Color);
 			glBindTexture(GL_TEXTURE_2D, m_Texture2D);
 			glBindVertexArray(VAO);
 			glDrawArrays(GL_TRIANGLES, 0, 6);

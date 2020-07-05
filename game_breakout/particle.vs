@@ -1,13 +1,17 @@
 #version 330 core
-layout(location = 0) in vec4 vertex;
+layout (location = 0) in vec4 vertex; // <vec2 position, vec2 texCoords>
 
-out vec2 Texcoords;
+out vec2 TexCoords;
+out vec4 ParticleColor;
 
-uniform mat4 model;
 uniform mat4 projection;
+uniform vec2 offset;
+uniform vec4 color;
 
 void main()
 {
-   Texcoords = vertex.zw;
-   gl_Position = projection*model*vec4(vertex.xy, 0.0, 1.0);
+    float scale = 10.0f;
+    TexCoords = vertex.zw;
+    ParticleColor = color;
+    gl_Position = projection * vec4((vertex.xy * scale) + offset, 0.0, 1.0);
 }
