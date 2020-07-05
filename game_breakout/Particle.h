@@ -16,14 +16,14 @@ struct Particle
 class ParticleGenerator
 {
 public:
-	ParticleGenerator(Shader* shader, unsigned int texture_2D, GLuint amount);
+	ParticleGenerator(Shader shader, unsigned int texture_2D, GLuint amount);
 	void Update(GLfloat dt, GameObject& object, GLuint newParticles, glm::vec2 offset = glm::vec2(0.0f,0.0f));
 	void Draw();
 private:
 	GLuint  m_amount;
 	std::vector<Particle> m_Particle;
 	unsigned int m_Texture2D;
-	Shader* m_shader;
+	Shader m_shader;
 	GLuint VAO;
 	void init();
 	GLuint firstUnusedParticle();

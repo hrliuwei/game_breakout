@@ -1,6 +1,6 @@
 #include "Particle.h"
 
-ParticleGenerator::ParticleGenerator(Shader* shader, unsigned int texture_2D, GLuint amount)
+ParticleGenerator::ParticleGenerator(Shader shader, unsigned int texture_2D, GLuint amount)
 	:m_shader(shader),
 	m_Texture2D(texture_2D),
 	m_amount(amount)
@@ -37,7 +37,7 @@ void ParticleGenerator::respawPartcile(Particle& particle, GameObject& object, g
 {
 	GLfloat random = (rand() % 100 - 50) / 10.f;
 	GLfloat rColor = 0.5 + (rand() % 100) / 100.f;
-	particle.Position = object.Position  + glm::vec2(random,0.0f);
+	particle.Position = object.Position  + glm::vec2(random, random) + offset;
 	particle.Color = glm::vec4(rColor, rColor, rColor, 1.0f);
 	particle.Life = 1.0f;
 	particle.Velocity = glm::vec2(10.0f,0.0f);
@@ -60,15 +60,17 @@ void ParticleGenerator::Update(GLfloat dt, GameObject& object, GLuint newParticl
 		p.Life -= dt;
 		if (p.Life > 0.0f)
 		{
-			//p.Position -= p.Velocity*dt;
-			//p.Color.a -= dt * 2.5f;
+			p.Position -= p.Velocity*dt;
+			//p.Color.a -= dt * 5.0f;
+			p.Color.a = 0.0f;
 		}
 	}
 }
 
 void ParticleGenerator::Draw() {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-	m_shader->use();
+	m_shader.use();
+	int nsize = 10;
 	for (Particle particle:m_Particle)
 	{
 		if (particle.Life > 0.0f)
@@ -76,14 +78,14 @@ void ParticleGenerator::Draw() {
 			glm::mat4 model(1.0f);
 			model = glm::translate(model, glm::vec3(particle.Position, 0.0f));
 
-			model = glm::translate(model, glm::vec3(0.5f*50, 0.5f*50, 0.0f));
+			model = glm::translate(model, glm::vec3(0.5f*nsize, 0.5f*nsize, 0.0f));
 			model = glm::rotate(model, 0.0f, glm::vec3(0.0f, 0.0f, 1.0f));
-			model = glm::translate(model, glm::vec3(-0.5f*50, -0.5f*50, 0.0f));
+			model = glm::translate(model, glm::vec3(-0.5f*nsize, -0.5f*nsize, 0.0f));
 
-			model = glm::scale(model, glm::vec3(glm::vec2(50.0f,50.f), 1.0f));
+			model = glm::scale(model, glm::vec3(glm::vec2(nsize, nsize), 1.0f));
 
-			m_shader->setMat4("model", model);
-			m_shader->setVec3("spriteColor", glm::vec3(0.5f,0.5f,0.5f));
+			m_shader.setMat4("model", model);
+			m_shader.setVec3("spriteColor", glm::vec3(1.0,1.0f,0.0f));
 			
 			glBindTexture(GL_TEXTURE_2D, m_Texture2D);
 			glBindVertexArray(VAO);

@@ -51,8 +51,8 @@ ParticleGenerator   *Particles;
 	 ResourceManager::GetInstance().LoadShader("D:\\Advantage\\game_breakout\\game_breakout\\vertex.vs",
 		 "D:\\Advantage\\game_breakout\\game_breakout\\fragment.fs", nullptr, "sprite");
 
-	 ResourceManager::GetInstance().LoadShader("D:\\Advantage\\game_breakout\\game_breakout\\vertex.vs",
-		 "D:\\Advantage\\game_breakout\\game_breakout\\fragment.fs", nullptr, "particle");
+	 ResourceManager::GetInstance().LoadShader("D:\\Advantage\\game_breakout\\game_breakout\\particle.vs",
+		 "D:\\Advantage\\game_breakout\\game_breakout\\particle.fs", nullptr, "particle");
 
 	 glm::mat4 projection = glm::ortho(0.0f, (GLfloat)Width, (GLfloat)Height, 0.0f, -1.0f, 1.0f);
 	 ResourceManager::GetInstance().GetShader("sprite").use();
@@ -61,7 +61,7 @@ ParticleGenerator   *Particles;
 
 	 g_Renderer = new SpriteRenderer(ResourceManager::GetInstance().GetShader("sprite"));
 	 ResourceManager::GetInstance().LoadTexture((commonPath + "\\awesomeface.png").c_str(), "face");
-	 ResourceManager::GetInstance().LoadTexture((commonPath + "\\background.jpg").c_str(), "background");
+	 ResourceManager::GetInstance().LoadTexture((commonPath + "\\background2.jpg").c_str(), "background");
 	 ResourceManager::GetInstance().LoadTexture((commonPath + "\\block.png").c_str(), "block");
 	 ResourceManager::GetInstance().LoadTexture((commonPath + "\\block_solid.png").c_str(), "block_solid");
 	 ResourceManager::GetInstance().LoadTexture((commonPath + "\\paddle.png").c_str(), "paddle");
@@ -87,7 +87,7 @@ ParticleGenerator   *Particles;
 	 glm::vec2 ballPos = playerPos + glm::vec2(PLAYER_SIZE.x / 2 - BALL_RADIUS, -BALL_RADIUS * 2);
 	 Ball = new BallObject(ballPos, BALL_RADIUS, INITIAL_BALL_VELOCITY, ResourceManager::GetInstance().GetTexture("face"));
 
-	 Particles = new ParticleGenerator(&ResourceManager::GetInstance().GetShader("particle"),
+	 Particles = new ParticleGenerator(ResourceManager::GetInstance().GetShader("sprite"),
 		 ResourceManager::GetInstance().GetTexture("particle"), 500);
 
 	
