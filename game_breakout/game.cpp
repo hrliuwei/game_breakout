@@ -47,12 +47,12 @@ ParticleGenerator   *Particles;
  
  void Game::Init()
  {
-	 std::string commonPath = "D:\\Advantage\\game_breakout\\Resource";
-	 ResourceManager::GetInstance().LoadShader("D:\\Advantage\\game_breakout\\game_breakout\\vertex.vs",
-		 "D:\\Advantage\\game_breakout\\game_breakout\\fragment.fs", nullptr, "sprite");
+	 std::string commonPath = "F:\\PersonGit\\game_breakout\\Resource";
+	 ResourceManager::GetInstance().LoadShader("F:\\PersonGit\\game_breakout\\game_breakout\\vertex.vs",
+		 "F:\\PersonGit\\game_breakout\\game_breakout\\fragment.fs", nullptr, "sprite");
 
-	 ResourceManager::GetInstance().LoadShader("D:\\Advantage\\game_breakout\\game_breakout\\particle.vs",
-		 "D:\\Advantage\\game_breakout\\game_breakout\\particle.fs", nullptr, "particle");
+	 ResourceManager::GetInstance().LoadShader("F:\\PersonGit\\game_breakout\\game_breakout\\particle.vs",
+		 "F:\\PersonGit\\game_breakout\\game_breakout\\particle.fs", nullptr, "particle");
 
 	 glm::mat4 projection = glm::ortho(0.0f, (GLfloat)Width, (GLfloat)Height, 0.0f, -1.0f, 1.0f);
 	 ResourceManager::GetInstance().GetShader("sprite").use();
@@ -60,7 +60,7 @@ ParticleGenerator   *Particles;
 	 ResourceManager::GetInstance().GetShader("sprite").setMat4("projection", projection);
 
 	 ResourceManager::GetInstance().GetShader("particle").use();
-	 ResourceManager::GetInstance().GetShader("particle").setInt("image", 0);
+	 ResourceManager::GetInstance().GetShader("particle").setInt("sprite", 0);
 	 ResourceManager::GetInstance().GetShader("particle").setMat4("projection", projection);
 
 	 g_Renderer = new SpriteRenderer(ResourceManager::GetInstance().GetShader("sprite"));
@@ -101,7 +101,7 @@ ParticleGenerator   *Particles;
  {
 	 Ball->Move(dt, Width);
 	 DoCollisions();
-	 Particles->Update(dt, *Ball, 2, glm::vec2(Ball->m_Radius,0.0f));
+	 Particles->Update(dt, *Ball, 2, glm::vec2(Ball->m_Radius, -0.0f));
 	 if (Ball->Position.y >= Height)
 	 {
 		 ResetPlayer();
@@ -148,7 +148,7 @@ ParticleGenerator   *Particles;
 		 glm::vec2(0,0), glm::vec2(Width, Height), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 
 	 Player->Draw(*g_Renderer);
-	 m_Levels[m_Level].Draw(*g_Renderer);
+	// m_Levels[m_Level].Draw(*g_Renderer);
 	 Particles->Draw();
 	 Ball->Draw(*g_Renderer);
  }

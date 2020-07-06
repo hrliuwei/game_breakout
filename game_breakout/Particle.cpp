@@ -35,12 +35,17 @@ GLuint ParticleGenerator::firstUnusedParticle()
 
 void ParticleGenerator::respawPartcile(Particle& particle, GameObject& object, glm::vec2 offset)
 {
-	GLfloat random = (rand() % 100 - 50) / 1.0f;
-	GLfloat randomEx = (rand() % 100 - 50) / 1.0f;
-	GLfloat rColor = 0.5 + (rand() % 100) / 100.f;
+	GLfloat random = (rand() % 200 - 100) / 1.0f;
+	GLfloat randomEx = -abs(random);
+	if (abs(random) < 50){
+		randomEx = -(100 - abs(random));
+	}
+	GLfloat rColor = (rand() % 100) / 100.f;
+	GLfloat gColor = (rand() % 100) / 100.f;
+	GLfloat bColor = (rand() % 100) / 100.f;
 	particle.Position = object.Position  + glm::vec2(random, randomEx) + offset;
-	particle.Color = glm::vec4(rColor, rColor, rColor, 1.0f);
-	particle.Life = 10.0f;
+	particle.Color = glm::vec4(rColor, gColor, bColor, 1.0f);
+	particle.Life = 5.0f;
 	particle.Velocity = glm::vec2(0.0f,5.0f);
 }
 
