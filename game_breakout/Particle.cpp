@@ -37,15 +37,20 @@ void ParticleGenerator::respawPartcile(Particle& particle, GameObject& object, g
 {
 	GLfloat random = (rand() % 200 - 100) / 1.0f;
 	GLfloat randomEx = -abs(random);
-	if (abs(random) < 50){
-		randomEx = -(100 - abs(random));
-	}
+	int prefix[2] = { -1,1 };
+	int nIndex = rand() % 2;
+	int R = 100;
+	glm::vec2 Positon_circle = object.Position + glm::vec2(0.0f, -200.0f);
+	GLfloat result = 100 * 100 - abs(random*random);
+	//randomEx = -glm::sqrt(result);
+	//randomEx = randomEx * prefix[nIndex];
+	randomEx = -random * random/100;
 	GLfloat rColor = (rand() % 100) / 100.f;
 	GLfloat gColor = (rand() % 100) / 100.f;
 	GLfloat bColor = (rand() % 100) / 100.f;
-	particle.Position = object.Position  + glm::vec2(random, randomEx) + offset;
+	particle.Position = object.Position  + glm::vec2(random, randomEx) + offset + glm::vec2(0.0f,-100.0f);
 	particle.Color = glm::vec4(rColor, gColor, bColor, 1.0f);
-	particle.Life = 5.0f;
+	particle.Life = 10.0f;
 	particle.Velocity = glm::vec2(0.0f,5.0f);
 }
 
