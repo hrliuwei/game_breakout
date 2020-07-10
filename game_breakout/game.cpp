@@ -92,7 +92,7 @@ ParticleGenerator   *Particles;
 	 Ball = new BallObject(ballPos, BALL_RADIUS, INITIAL_BALL_VELOCITY, ResourceManager::GetInstance().GetTexture("face"));
 
 	 Particles = new ParticleGenerator(ResourceManager::GetInstance().GetShader("particle"),
-		 ResourceManager::GetInstance().GetTexture("particle"), 10000);
+		 ResourceManager::GetInstance().GetTexture("particle"), 100);
 
 	
  }
@@ -101,7 +101,7 @@ ParticleGenerator   *Particles;
  {
 	 Ball->Move(dt, Width);
 	 DoCollisions();
-	 Particles->Update(dt, *Ball, 2, glm::vec2(Ball->m_Radius, -0.0f));
+	 Particles->Update(dt, *Ball, 5, glm::vec2(Ball->m_Radius, -0.0f));
 	 if (Ball->Position.y >= Height)
 	 {
 		 ResetPlayer();

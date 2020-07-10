@@ -36,7 +36,7 @@ GLuint ParticleGenerator::firstUnusedParticle()
 void ParticleGenerator::respawPartcile(Particle& particle, GameObject& object, glm::vec2 offset)
 {
 	GLfloat random = (rand() % 200 - 100) / 1.0f;
-	GLfloat randomEx = -abs(random);
+	GLfloat randomEx = (rand() % 200 - 100) / 1.0f;
 	int prefix[2] = { -1,1 };
 	int nIndex = rand() % 2;
 	int R = 100;
@@ -44,13 +44,13 @@ void ParticleGenerator::respawPartcile(Particle& particle, GameObject& object, g
 	GLfloat result = 100 * 100 - abs(random*random);
 	//randomEx = -glm::sqrt(result);
 	//randomEx = randomEx * prefix[nIndex];
-	randomEx = -random * random/100;
+	//randomEx = -random * random/100;
 	GLfloat rColor = (rand() % 100) / 100.f;
 	GLfloat gColor = (rand() % 100) / 100.f;
 	GLfloat bColor = (rand() % 100) / 100.f;
-	particle.Position = object.Position  + glm::vec2(random, randomEx) + offset + glm::vec2(0.0f,-100.0f);
+	particle.Position = object.Position  + glm::vec2(random, randomEx) + offset + glm::vec2(0.0f,-200.0f);
 	particle.Color = glm::vec4(rColor, gColor, bColor, 1.0f);
-	particle.Life = 10.0f;
+	particle.Life = 3.0f;
 	particle.Velocity = glm::vec2(0.0f,5.0f);
 }
 
@@ -68,7 +68,7 @@ void ParticleGenerator::Update(GLfloat dt, GameObject& object, GLuint newParticl
 		p.Life -= dt;
 		if (p.Life > 0.0f)
 		{
-			p.Position -= p.Velocity*dt;
+			p.Position += p.Velocity*dt*5.0f;
 			p.Color.a -= dt * 2.5f;
 			//p.Color.a = 0.0f;
 		}

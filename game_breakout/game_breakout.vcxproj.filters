@@ -63,6 +63,9 @@
     <ClCompile Include="Particle.cpp">
       <Filter>game</Filter>
     </ClCompile>
+    <ClCompile Include="PostProcessor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="shader.h">
@@ -94,6 +97,9 @@
     </ClInclude>
     <ClInclude Include="Particle.h">
       <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="PostProcessor.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
