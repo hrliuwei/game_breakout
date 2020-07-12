@@ -162,7 +162,7 @@ GLfloat ShakeTime = 0.0f;
  
  void Game::Render()
  {
-	 //Effects->BeginRender();
+	 Effects->BeginRender();
 	 g_Renderer->DrawSprite(ResourceManager::GetInstance().GetTexture("background"),
 		 glm::vec2(0,0), glm::vec2(Width, Height), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 
@@ -170,8 +170,8 @@ GLfloat ShakeTime = 0.0f;
 	 m_Levels[m_Level].Draw(*g_Renderer);
 	 Particles->Draw();
 	 Ball->Draw(*g_Renderer);
-	// Effects->EndRneder();
-	// Effects->Render(glfwGetTime());
+	 Effects->EndRneder();
+	 Effects->Render(glfwGetTime());
  }
 
  void Game::ResetPlayer()
