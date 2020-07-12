@@ -37,6 +37,8 @@ CPostProcessor::CPostProcessor(Shader shader, GLuint width, GLuint height)
 	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	InitRenderData();
+	m_PostProcessingShader.use();
 	m_PostProcessingShader.setInt("scene", 0);
 	GLfloat offset = 1.0f / 300.0f;
 	GLfloat offsets[9][2] = {
@@ -89,7 +91,7 @@ void CPostProcessor::Render(GLfloat time)
 	m_PostProcessingShader.setInt("chaos", this->Chaos);
 	m_PostProcessingShader.setInt("shake", this->Shake);
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindTexture(GL_TEXTURE_2D, m_texture2D);
 	glBindVertexArray(VAO);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 	glBindVertexArray(0);

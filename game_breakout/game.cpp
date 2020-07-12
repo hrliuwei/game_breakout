@@ -12,6 +12,7 @@
 #include <GLFW/glfw3.h>
 #include <algorithm>
 #include "Particle.h"
+#include "PostProcessor.h"
 
 
 SpriteRenderer  *g_Renderer;
@@ -32,7 +33,9 @@ BallObject     *Ball;
 
 ParticleGenerator   *Particles;
 
+CPostProcessor* Effects;
 
+GLfloat ShakeTime = 0.0f;
 
  Game::Game(GLuint width, GLuint height)
  	: State(GAME_ACTIVE), Keys(), Width(width), Height(height)
@@ -47,12 +50,15 @@ ParticleGenerator   *Particles;
  
  void Game::Init()
  {
-	 std::string commonPath = "F:\\PersonGit\\game_breakout\\Resource";
-	 ResourceManager::GetInstance().LoadShader("F:\\PersonGit\\game_breakout\\game_breakout\\vertex.vs",
-		 "F:\\PersonGit\\game_breakout\\game_breakout\\fragment.fs", nullptr, "sprite");
+	 std::string commonPath = "D:\\Advantage\\game_breakout\\Resource";
+	 ResourceManager::GetInstance().LoadShader("D:\\Advantage\\game_breakout\\game_breakout\\vertex.vs",
+		 "D:\\Advantage\\game_breakout\\game_breakout\\fragment.fs", nullptr, "sprite");
 
-	 ResourceManager::GetInstance().LoadShader("F:\\PersonGit\\game_breakout\\game_breakout\\particle.vs",
-		 "F:\\PersonGit\\game_breakout\\game_breakout\\particle.fs", nullptr, "particle");
+	 ResourceManager::GetInstance().LoadShader("D:\\Advantage\\game_breakout\\game_breakout\\particle.vs",
+		 "D:\\Advantage\\game_breakout\\game_breakout\\particle.fs", nullptr, "particle");
+
+	 ResourceManager::GetInstance().LoadShader("D:\\Advantage\\game_breakout\\game_breakout\\post_processor.vs",
+		 "D:\\Advantage\\game_breakout\\game_breakout\\post_processor.fs", nullptr, "post_processor");
 
 	 glm::mat4 projection = glm::ortho(0.0f, (GLfloat)Width, (GLfloat)Height, 0.0f, -1.0f, 1.0f);
 	 ResourceManager::GetInstance().GetShader("sprite").use();
@@ -62,6 +68,9 @@ ParticleGenerator   *Particles;
 	 ResourceManager::GetInstance().GetShader("particle").use();
 	 ResourceManager::GetInstance().GetShader("particle").setInt("sprite", 0);
 	 ResourceManager::GetInstance().GetShader("particle").setMat4("projection", projection);
+
+	 ResourceManager::GetInstance().GetShader("post_processor").use();
+	 ResourceManager::GetInstance().GetShader("post_processor").setInt("scene", 0);
 
 	 g_Renderer = new SpriteRenderer(ResourceManager::GetInstance().GetShader("sprite"));
 	 ResourceManager::GetInstance().LoadTexture((commonPath + "\\awesomeface.png").c_str(), "face");
@@ -92,8 +101,9 @@ ParticleGenerator   *Particles;
 	 Ball = new BallObject(ballPos, BALL_RADIUS, INITIAL_BALL_VELOCITY, ResourceManager::GetInstance().GetTexture("face"));
 
 	 Particles = new ParticleGenerator(ResourceManager::GetInstance().GetShader("particle"),
-		 ResourceManager::GetInstance().GetTexture("particle"), 100);
+		 ResourceManager::GetInstance().GetTexture("particle"), 1000);
 
+	 Effects = new CPostProcessor(ResourceManager::GetInstance().GetShader("post_processor"), Width, Height);
 	
  }
  
@@ -107,6 +117,14 @@ ParticleGenerator   *Particles;
 		 ResetPlayer();
 		 RestBall();
 		 RestLevel();
+	 }
+	 if (ShakeTime > 0.0f)
+	 {
+		 ShakeTime -= dt;
+		 if (ShakeTime <= 0.0f)
+		 {
+			 Effects->Shake = false;
+		 }
 	 }
  }
  
@@ -144,13 +162,16 @@ ParticleGenerator   *Particles;
  
  void Game::Render()
  {
+	 //Effects->BeginRender();
 	 g_Renderer->DrawSprite(ResourceManager::GetInstance().GetTexture("background"),
 		 glm::vec2(0,0), glm::vec2(Width, Height), 0.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 
 	 Player->Draw(*g_Renderer);
-	// m_Levels[m_Level].Draw(*g_Renderer);
+	 m_Levels[m_Level].Draw(*g_Renderer);
 	 Particles->Draw();
 	 Ball->Draw(*g_Renderer);
+	// Effects->EndRneder();
+	// Effects->Render(glfwGetTime());
  }
 
  void Game::ResetPlayer()
@@ -192,6 +213,10 @@ ParticleGenerator   *Particles;
 			 if (std::get<0>(collision)){
 				 if (!obj.IsSolid){
 					 obj.Destroyed = GL_TRUE;
+				 }
+				 else {
+					 Effects->Shake = true;
+					 ShakeTime = 0.05f;
 				 }
 				 Direction dir = std::get<1>(collision);
 				 if (dir == LEFT || dir == RIGHT){

@@ -16,6 +16,7 @@ private:
 	GLuint MSFBO, FBO;
 	GLuint RBO;
 	GLuint VAO;
+	GLuint rbo;
 	void InitRenderData();
 };
 

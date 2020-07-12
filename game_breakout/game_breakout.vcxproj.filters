@@ -64,7 +64,7 @@
       <Filter>game</Filter>
     </ClCompile>
     <ClCompile Include="PostProcessor.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>render</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -99,7 +99,7 @@
       <Filter>game</Filter>
     </ClInclude>
     <ClInclude Include="PostProcessor.h">
-      <Filter>Header Files</Filter>
+      <Filter>render</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
