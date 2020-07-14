@@ -50,15 +50,15 @@ GLfloat ShakeTime = 0.0f;
  
  void Game::Init()
  {
-	 std::string commonPath = "D:\\Advantage\\game_breakout\\Resource";
-	 ResourceManager::GetInstance().LoadShader("D:\\Advantage\\game_breakout\\game_breakout\\vertex.vs",
-		 "D:\\Advantage\\game_breakout\\game_breakout\\fragment.fs", nullptr, "sprite");
+	 std::string commonPath = "F:\\PersonGit\\game_breakout\\Resource";
+	 ResourceManager::GetInstance().LoadShader("F:\\PersonGit\\game_breakout\\game_breakout\\vertex.vs",
+		 "F:\\PersonGit\\game_breakout\\game_breakout\\fragment.fs", nullptr, "sprite");
 
-	 ResourceManager::GetInstance().LoadShader("D:\\Advantage\\game_breakout\\game_breakout\\particle.vs",
-		 "D:\\Advantage\\game_breakout\\game_breakout\\particle.fs", nullptr, "particle");
+	 ResourceManager::GetInstance().LoadShader("F:\\PersonGit\\game_breakout\\game_breakout\\particle.vs",
+		 "F:\\PersonGit\\game_breakout\\game_breakout\\particle.fs", nullptr, "particle");
 
-	 ResourceManager::GetInstance().LoadShader("D:\\Advantage\\game_breakout\\game_breakout\\post_processor.vs",
-		 "D:\\Advantage\\game_breakout\\game_breakout\\post_processor.fs", nullptr, "post_processor");
+	 ResourceManager::GetInstance().LoadShader("F:\\PersonGit\\game_breakout\\game_breakout\\post_processor.vs",
+		 "F:\\PersonGit\\game_breakout\\game_breakout\\post_processor.fs", nullptr, "post_processor");
 
 	 glm::mat4 projection = glm::ortho(0.0f, (GLfloat)Width, (GLfloat)Height, 0.0f, -1.0f, 1.0f);
 	 ResourceManager::GetInstance().GetShader("sprite").use();

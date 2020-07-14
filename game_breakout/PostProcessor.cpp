@@ -42,7 +42,7 @@ CPostProcessor::CPostProcessor(Shader shader, GLuint width, GLuint height)
 	m_PostProcessingShader.setInt("scene", 0);
 	GLfloat offset = 1.0f / 300.0f;
 	GLfloat offsets[9][2] = {
-		 { -offset,  offset  },  // top-left
+		{ -offset,  offset  },  // top-left
 		{  0.0f,    offset  },  // top-center
 		{  offset,  offset  },  // top-right
 		{ -offset,  0.0f    },  // center-left
@@ -52,7 +52,8 @@ CPostProcessor::CPostProcessor(Shader shader, GLuint width, GLuint height)
 		{  0.0f,   -offset  },  // bottom-center
 		{  offset, -offset  }   // bottom-right 
 	};
-	glUniform2fv(glGetUniformLocation(m_PostProcessingShader.ID, "offset"), 9, (GLfloat*)offsets);
+	int err = glGetUniformLocation(m_PostProcessingShader.ID, "offsets");
+	glUniform2fv(glGetUniformLocation(m_PostProcessingShader.ID, "offsets"), 9, (GLfloat*)offsets);
 	GLint edge_kernel[9] = {
 		-1,-1,-1,
 		-1,8,-1,
@@ -64,6 +65,7 @@ CPostProcessor::CPostProcessor(Shader shader, GLuint width, GLuint height)
 		2.0 / 16, 4.0 / 16, 2.0 / 16,
 		1.0 / 16, 2.0 / 16, 1.0 / 16
 	};
+	err = glGetUniformLocation(m_PostProcessingShader.ID, "blur_kernel");
 	glUniform1fv(glGetUniformLocation(m_PostProcessingShader.ID, "blur_kernel"), 9, blur_kernel);
 }
 
@@ -87,9 +89,9 @@ void CPostProcessor::Render(GLfloat time)
 {
 	m_PostProcessingShader.use();
 	m_PostProcessingShader.setFloat("time", time);
-	m_PostProcessingShader.setInt("confuse", this->Confuse);
+	m_PostProcessingShader.setBool("confuse",Confuse);
 	m_PostProcessingShader.setInt("chaos", this->Chaos);
-	m_PostProcessingShader.setInt("shake", this->Shake);
+	m_PostProcessingShader.setInt("shake", Shake);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, m_texture2D);
 	glBindVertexArray(VAO);
